@@ -275,43 +275,47 @@
 
 		<div class="row">
 
-			<form class="row g-3">
+			<form id="contactForm" class="row g-3">
 
 				<div class="col-md-6">
 
-					<label for="name" class="form-label">
+					<label for="inputName" class="form-label">
 						Name
 					</label>
 
 					<input type="text"
 						class="form-control"
-						id="inputEmail4">
+						id="inputName"
+						placeholder="Your Name"
+						required>
 
 				</div>
 
 				<div class="col-md-6">
 
-					<label for="inputEmail4" class="form-label">
+					<label for="inputEmail" class="form-label">
 						Email
 					</label>
 
 					<input type="email"
 						class="form-control"
-						id="inputEmail4">
+						id="inputEmail"
+						placeholder="example@gmail.com"
+						required>
 
 				</div>
 
 				<div class="col-12">
 
-					<label for="inputAddress" class="form-label">
+					<label for="inputFeedback" class="form-label">
 						Feedback
 					</label>
 
-					<textarea type="text"
-						class="form-control"
-						row="5"
-						id="inputAddress"
-						placeholder="Your Feedback"></textarea>
+					<textarea class="form-control"
+						rows="5"
+						id="inputFeedback"
+						placeholder="Your Feedback"
+						required></textarea>
 
 				</div>
 
@@ -332,8 +336,7 @@
 	<footer class="page-footer font-small black">
 
 		<div class="footer-copyright text-center py-3">
-			© 2021 Copyright
-			<!-- <a href="...">Resume_Builder</a> -->
+			© Resume Builder
 		</div>
 
 	</footer>
@@ -343,6 +346,29 @@
 <script>
 	$(function () {
 		$("[rel='tooltip']").tooltip();
+
+		$('#contactForm').on('submit', function (e) {
+			e.preventDefault();
+			let name = $('#inputName').val().trim();
+			let email = $('#inputEmail').val().trim();
+			let feedback = $('#inputFeedback').val().trim();
+
+			if (!name || !email || !feedback) {
+				alert('Please fill out all fields before submitting.');
+				return;
+			}
+
+			$('#contactStatus').remove();
+			$(this).before(`
+				<div id="contactStatus" class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+					<strong>Thank you, ${name}!</strong> Your feedback has been received (Client-side demo submission).
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			`);
+			this.reset();
+		});
 	});
 </script>
 

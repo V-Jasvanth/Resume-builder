@@ -503,11 +503,7 @@ $("#add_lang").click(function (e) {
 // }
 
 
-//  **********    **********    Country, state and city API   **********    **********
-
-//  **********    **********    Country, state and city API & Fallback   **********    **********
-
-let auth_token;
+//  **********    **********    Country, state and city options   **********    **********
 
 const fallbackCountries = [
   "India", "United States", "United Kingdom", "Canada", "Australia",
@@ -536,146 +532,87 @@ function handleCityFallback() {
   }
 }
 
-$('#country').click(function () {
-  getCountries();
-  $('#country').unbind('click');
-});
+function getCountries() {
+  loadLocationFallback();
+  getStates();
+}
+
+function getStates() {
+  handleStateFallback();
+  getCities();
+}
+
+function getCities() {
+  handleCityFallback();
+}
 
 $(document).ready(function () {
   loadLocationFallback();
   handleStateFallback();
   handleCityFallback();
-
-  $.ajax({
-    type: 'get',
-    url: 'https://www.universal-tutorial.com/api/getaccesstoken',
-    success: function (data) {
-      if (data && data.auth_token) {
-        auth_token = data.auth_token;
-      } else {
-        loadLocationFallback();
-      }
-    },
-    error: function (error) {
-      console.log("Universal Tutorial API unavailable, using location fallback options.");
-      loadLocationFallback();
-    },
-    headers: {
-      "Accept": "application/json",
-      "api-token": "QFZCxL-P9DDVZzxIYTti85dbkTb-RZYqW4fG39dTvmeLJ9TCRmVj-UQSruPENKH3MCw",
-      "user-email": "murtazamister1@gmail.com"
-    }
-  });
 });
 
-function getCountries() {
-  if (!auth_token) {
-    loadLocationFallback();
-    getStates();
-    return;
-  }
-  $.ajax({
-    type: 'get',
-    url: 'https://www.universal-tutorial.com/api/countries',
-    success: function (data) {
-      $('#country').empty().append('<option value="">Select Country</option>');
-      data.forEach((ele) => {
-        $('#country').append(`<option value="${ele.country_name}">${ele.country_name}</option>`);
-      });
-      getStates();
-    },
-    error: function (error) {
-      console.log("getCountries error, using fallback options.");
-      loadLocationFallback();
-      getStates();
-    },
-    headers: {
-      "Authorization": "Bearer " + auth_token,
-      "Accept": "application/json"
-    }
-  });
-}
+$('#country').on('change click', function () {
+  getStates();
+});
 
-function getStates() {
-  let countryVal = $('#country').val();
-  if (!auth_token || !countryVal) {
-    handleStateFallback();
-    getCities();
-    return;
-  }
-  $.ajax({
-    type: 'get',
-    url: 'https://www.universal-tutorial.com/api/states/' + countryVal,
-    success: function (data) {
-      $('#state').empty().append('<option value="">Select State</option>');
-      data.forEach((ele) => {
-        $('#state').append(`<option value="${ele.state_name}">${ele.state_name}</option>`);
-      });
-      getCities();
-    },
-    error: function (error) {
-      console.log("getStates error, using fallback options.");
-      handleStateFallback();
-      getCities();
-    },
-    headers: {
-      "Authorization": "Bearer " + auth_token,
-      "Accept": "application/json"
-    }
-  });
-}
-
-function getCities() {
-  let stateVal = $('#state').val();
-  if (!auth_token || !stateVal) {
-    handleCityFallback();
-    return;
-  }
-  $.ajax({
-    type: 'get',
-    url: 'https://www.universal-tutorial.com/api/cities/' + stateVal,
-    success: function (data) {
-      $('#city').empty().append('<option value="">Select City</option>');
-      data.forEach((ele) => {
-        $('#city').append(`<option value="${ele.city_name}">${ele.city_name}</option>`);
-      });
-    },
-    error: function (error) {
-      console.log("getCities error, using fallback options.");
-      handleCityFallback();
-    },
-    headers: {
-      "Authorization": "Bearer " + auth_token,
-      "Accept": "application/json"
-    }
-  });
-}
+$('#state').on('change click', function () {
+  getCities();
+});
 
 //  **********    **********    Profile Images    **********    **********
 
+function resetImagePreview() {
+  let previewText = document.getElementById('previewText');
+  let image = document.getElementById('image');
+  let imgContainer = document.getElementsByClassName('imgContainer')[0];
+
+  if (previewText) previewText.style.display = null;
+  if (image) {
+    image.style.display = null;
+    $('#image').attr('src', '');
+  }
+  if (imgContainer) imgContainer.style.border = null;
+}
+
 $('.imgContainer').click(function () {
   $('#inpImg').click();
-})
+});
+
 $('#inpImg').change(function () {
   const file = this.files[0];
   if (file) {
+    // Validate file type
+    const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+    if (!validTypes.includes(file.type.toLowerCase())) {
+      alert("Invalid image format! Please upload an image file (JPG, JPEG, PNG, GIF, or WEBP).");
+      this.value = "";
+      resetImagePreview();
+      return;
+    }
+
+    // Validate file size (max 3 MB)
+    const maxSizeInBytes = 3 * 1024 * 1024;
+    if (file.size > maxSizeInBytes) {
+      alert("Image file size exceeds the 3 MB limit. Please select a smaller file.");
+      this.value = "";
+      resetImagePreview();
+      return;
+    }
+
     const reader = new FileReader();
     $('#previewText').css('display', 'none');
     $('.imgContainer').css('border', 'none');
     $('#image').css('display', 'block');
     reader.addEventListener('load', function () {
       $('#image').attr('src', this.result);
-    })
+    });
     reader.readAsDataURL(file);
   }
   else {
-    // validate_chg_color(this);
-    document.getElementById('previewText').style.display = null;
-    document.getElementById('image').style.display = null;
-    document.getElementsByClassName('imgContainer')[0].style.border = null;
-    $('#image').attr('src', '');
+    resetImagePreview();
   }
-})
+});
 
 //  **********    **********    **********    **********    **********
 

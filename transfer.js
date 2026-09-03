@@ -66,6 +66,21 @@ $(document).ready(function() {
     });
 });
 
+function escapeHTML(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+function escapeAndFormatNewlines(str) {
+    if (!str) return '';
+    return escapeHTML(str).replace(/\r?\n/g, '<br />');
+}
+
 function getValidYear(dateVal) {
     if (!dateVal) return null;
     let d = new Date(dateVal);
@@ -114,39 +129,42 @@ function generateCV(template) {
         let dob = new Date(dobVal);
         if (!isNaN(dob.getTime())) {
             let formattedDob = String(dob.getDate()).padStart(2, '0') + "/" + String(dob.getMonth() + 1).padStart(2, '0') + "/" + dob.getFullYear();
-            $(`#${template} #t_dob`).html(formattedDob);
+            $(`#${template} #t_dob`).text(formattedDob);
         } else {
-            $(`#${template} #t_dob`).html('');
+            $(`#${template} #t_dob`).text('');
         }
     } else {
-        $(`#${template} #t_dob`).html('');
+        $(`#${template} #t_dob`).text('');
     }
 
-    $(`#${template} #t_name`).html($('#fname').val() + " " + $('#lname').val());
-    $(`#${template} #t_gender`).html($('#gender').val());
-    $(`#${template} #t_email`).html($('#email').val());
-    $(`#${template} #t_number`).html($('#number').val());
+    let fullName = escapeHTML($('#fname').val()) + " " + escapeHTML($('#lname').val());
+    $(`#${template} #t_name`).html(fullName);
+    $(`#${template} #t_gender`).text($('#gender').val() || '');
+    $(`#${template} #t_email`).text($('#email').val() || '');
+    $(`#${template} #t_number`).text($('#number').val() || '');
 
     let cityVal = $('#city').val();
     let stateVal = $('#state').val();
     let countryVal = $('#country').val();
-    let addressLine = $('#address').val() + "<br>" + $('#zip').val() + "<br>" + (cityVal ? cityVal + ", " : "") + (stateVal ? stateVal + ", " : "") + (countryVal ? countryVal : "");
+    let addressLine = escapeHTML($('#address').val()) + "<br>" + escapeHTML($('#zip').val()) + "<br>" + (cityVal ? escapeHTML(cityVal) + ", " : "") + (stateVal ? escapeHTML(stateVal) + ", " : "") + (countryVal ? escapeHTML(countryVal) : "");
     $(`#${template} #t_address`).html(addressLine);
 
-    if ($('#website').val().trim() == "") {
+    let websiteVal = $('#website').val().trim();
+    if (websiteVal == "") {
         $(`#${template} #t_website`).parent().css('display', 'none');
     }
     else {
         $(`#${template} #t_website`).parent().css('display', 'block');
-        $(`#${template} #t_website`).html($('#website').val());
+        $(`#${template} #t_website`).text(websiteVal);
     }
 
-    if ($('#linkedIn').val().trim() == "") {
+    let linkedinVal = $('#linkedIn').val().trim();
+    if (linkedinVal == "") {
         $(`#${template} #t_linkedIn`).parent().css('display', 'none');
     }
     else {
         $(`#${template} #t_linkedIn`).parent().css('display', 'block');
-        $(`#${template} #t_linkedIn`).html($('#linkedIn').val());
+        $(`#${template} #t_linkedIn`).text(linkedinVal);
     }
 
     // ************************ Second form *************************
@@ -166,26 +184,28 @@ function generateCV(template) {
             continue;
         }
 
-        let displayDate = dateStr ? dateStr : "";
+        let safeDegree = escapeHTML(degree);
+        let safeSchool = escapeHTML(school);
+        let safeDisplayDate = escapeHTML(dateStr);
 
         if (template == "Template_1") {
             $('.t1 .left_side .education ul').append(`<li>
-            ${displayDate ? `<h5>${displayDate}</h5>` : ''}
-            ${degree ? `<h4>${degree}</h4>` : ''}
-            ${school ? `<h4>${school}</h4>` : ''}
+            ${safeDisplayDate ? `<h5>${safeDisplayDate}</h5>` : ''}
+            ${safeDegree ? `<h4>${safeDegree}</h4>` : ''}
+            ${safeSchool ? `<h4>${safeSchool}</h4>` : ''}
             </li>`);
         }
         else if (template == 'Template_2') {
             $('.t2 .lower_right .education .content').append(`
             <div class="con">
-                ${displayDate ? `<h4 class="time">${displayDate}</h4>` : ''}
-                ${degree ? `<h4 class="degree">${degree}</h4>` : ''}
-                ${school ? `<h4 class="uni">${school}</h4>` : ''}
+                ${safeDisplayDate ? `<h4 class="time">${safeDisplayDate}</h4>` : ''}
+                ${safeDegree ? `<h4 class="degree">${safeDegree}</h4>` : ''}
+                ${safeSchool ? `<h4 class="uni">${safeSchool}</h4>` : ''}
             </div>`);
         }
         else if (template == 'Template_3') {
-            let degDate = degree + (displayDate ? ` (${displayDate})` : '');
-            $('.t3 .education').append(`<p class="degree">${degDate}</p><p class="par-4">${school}</p>`);
+            let degDate = safeDegree + (safeDisplayDate ? ` (${safeDisplayDate})` : '');
+            $('.t3 .education').append(`<p class="degree">${degDate}</p><p class="par-4">${safeSchool}</p>`);
         }
     }
 
@@ -205,32 +225,35 @@ function generateCV(template) {
             continue;
         }
 
-        let displayDate = dateStr ? dateStr : "";
+        let safeJobTitle = escapeHTML(job_title);
+        let safeCompany = escapeHTML(company_name);
+        let safeDisplayDate = escapeHTML(dateStr);
+        let safeWorkDesc = escapeAndFormatNewlines(work_desc);
 
         if (template == "Template_1") {
             $('.t1 .right_side .experience').append(
                 `<div class="box">
                 <div class="year_company">
-                    ${displayDate ? `<h5>${displayDate}</h5>` : ''}
-                    ${company_name ? `<h5>${company_name}</h5>` : ''}
+                    ${safeDisplayDate ? `<h5>${safeDisplayDate}</h5>` : ''}
+                    ${safeCompany ? `<h5>${safeCompany}</h5>` : ''}
                 </div>
                 <div class="text">
-                    ${job_title ? `<h4>${job_title}</h4>` : ''}
-                    ${work_desc ? `<p>${work_desc}</p>` : ''}
+                    ${safeJobTitle ? `<h4>${safeJobTitle}</h4>` : ''}
+                    ${safeWorkDesc ? `<p>${safeWorkDesc}</p>` : ''}
                 </div>
             </div>`
             );
         }
         else if (template == 'Template_2') {
             $('.t2 .lower_right .experience .content').append(`<div class="con">
-            <div class="time">${displayDate ? `<h4>${displayDate}</h4>` : ''}${company_name ? `<h4>${company_name}</h4>` : ''}</div>
-            <div class="box"><div class="text">${job_title}</div><div class="exp">${work_desc}</div></div>
+            <div class="time">${safeDisplayDate ? `<h4>${safeDisplayDate}</h4>` : ''}${safeCompany ? `<h4>${safeCompany}</h4>` : ''}</div>
+            <div class="box"><div class="text">${safeJobTitle}</div><div class="exp">${safeWorkDesc}</div></div>
         </div>`);
         }
         else if (template == 'Template_3') {
-            let titleComp = job_title + (company_name ? ` at ${company_name}` : '') + (displayDate ? ` (${displayDate})` : '');
+            let titleComp = safeJobTitle + (safeCompany ? ` at ${safeCompany}` : '') + (safeDisplayDate ? ` (${safeDisplayDate})` : '');
             $('.t3 .content-box .experience').append(`<p class="job-title">${titleComp}</p>
-            <p class="par-4">${work_desc}</p>`);
+            <p class="par-4">${safeWorkDesc}</p>`);
         }
     }
 
@@ -243,14 +266,16 @@ function generateCV(template) {
         if (skill == "") {
             continue;
         }
+        let safeSkill = escapeHTML(skill);
+
         if (template == "Template_1") {
-            $('.t1 .right_side .skills .box').append(`<h4>${skill}</h4>`);
+            $('.t1 .right_side .skills .box').append(`<h4>${safeSkill}</h4>`);
         }
         else if (template == 'Template_2') {
-            $('.t2 .lower .lower_left .skills .content').append(`<div class="skill">${skill}</div>`);
+            $('.t2 .lower .lower_left .skills .content').append(`<div class="skill">${safeSkill}</div>`);
         }
         else if (template == 'Template_3') {
-            $('.t3 .skills').append(`<li><span>${skill}</span></li>`);
+            $('.t3 .skills').append(`<li><span>${safeSkill}</span></li>`);
         }
     }
 
@@ -263,16 +288,17 @@ function generateCV(template) {
         if (interest == "") {
             continue;
         }
+        let safeInterest = escapeHTML(interest);
 
         if (template == "Template_1") {
             $('.t1 .right_side .interest ul').append(`
-            <li>${interest}</li>`);
+            <li>${safeInterest}</li>`);
         }
         else if (template == 'Template_2') {
-            $('.t2 .lower .lower_left .interests .content').append(`<div class="con">${interest}</div>`);
+            $('.t2 .lower .lower_left .interests .content').append(`<div class="con">${safeInterest}</div>`);
         }
         else if (template == 'Template_3') {
-            $('.t3 .interest').append(`<li><span>${interest}</span></li>`);
+            $('.t3 .interest').append(`<li><span>${safeInterest}</span></li>`);
         }
     }
 
@@ -285,46 +311,48 @@ function generateCV(template) {
         if (lang == "") {
             continue;
         }
+        let safeLang = escapeHTML(lang);
 
         if (template == "Template_1") {
-            $('.t1 .left_side .language ul').append(`<li><span class="text">${lang}</span></li>`);
+            $('.t1 .left_side .language ul').append(`<li><span class="text">${safeLang}</span></li>`);
         }
         else if (template == 'Template_2') {
-            $('.t2 .lower .lower_left .languages .content .con').append(`<div class="lang">${lang}</div>`);
+            $('.t2 .lower .lower_left .languages .content .con').append(`<div class="lang">${safeLang}</div>`);
         }
         else if (template == 'Template_3') {
-            $('.t3 .content-box .languages').append(`<p class="p3">${lang}</p>`);
+            $('.t3 .content-box .languages').append(`<p class="p3">${safeLang}</p>`);
         }
     }
 
     //  **********    Achievements    **********
 
-    let achv = $(`#achv_description`).val().replaceAll("\n", "<br />\r\n");
-
-    if (achv !== "") {
+    let rawAchv = $(`#achv_description`).val().trim();
+    if (rawAchv !== "") {
+        let safeAchv = escapeAndFormatNewlines(rawAchv);
         if (template == "Template_1") {
-            $('.t1 .right_side .achievements').append(`<p>${achv}</p>`);
+            $('.t1 .right_side .achievements').append(`<p>${safeAchv}</p>`);
         }
         else if (template == 'Template_2') {
-            $('.t2 .lower_right .achievements .content .con').append(`<div class="val">${achv}</div>`);
+            $('.t2 .lower_right .achievements .content .con').append(`<div class="val">${safeAchv}</div>`);
         }
         else if (template == 'Template_3') {
-            $('.t3 .content-box').append(`<div class="achievements-box"><br /><p class="head">Achievements</p><p class="par-4">${achv}</p></div>`);
+            $('.t3 .content-box').append(`<div class="achievements-box"><br /><p class="head">Achievements</p><p class="par-4">${safeAchv}</p></div>`);
         }
     }
 
     // ******************* Profile *******************
 
-    let profile = $(`#profile`).val().replaceAll("\n", "<br />\r\n");
-    if (profile !== "") {
+    let rawProfile = $(`#profile`).val().trim();
+    if (rawProfile !== "") {
+        let safeProfile = escapeAndFormatNewlines(rawProfile);
         if (template == "Template_1") {
-            $('.t1 .right_side .prof').append(`<p>${profile}</p>`);
+            $('.t1 .right_side .prof').append(`<p>${safeProfile}</p>`);
         }
         else if (template == 'Template_2') {
-            $('.t2 .lower_right .profile').append(`<div class="content">${profile}</div>`);
+            $('.t2 .lower_right .profile').append(`<div class="content">${safeProfile}</div>`);
         }
         else if (template == 'Template_3') {
-            $('.t3 .objective').html(`${profile}`);
+            $('.t3 .objective').html(safeProfile);
         }
     }
 }
