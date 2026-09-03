@@ -3,30 +3,14 @@ body {
   height: 100%;
   font-size: 1rem;
   font-family: "Open Sans", sans-serif;
-  font-style: bold;
-}
-
-/* .button {
-  border: 1px solid rgb(200, 200, 200);
-  border-radius: 6px;
-  color: white;
-  background-color: #626ccc;
-  padding: 10px;
-  margin: 20px;
-  width: 180px;
-  height: 50px;
-  margin-bottom: 50px;
-} */
-
-button1 {
-  width: 300x;
-  height: 100px;
+  overflow-x: hidden;
 }
 
 nav li a:hover {
   background-color: rgb(240, 240, 240);
   border-radius: 30px;
 }
+
 .gradient {
   background-image: url("../images/img1.jpg");
   background-position: center;
@@ -34,92 +18,164 @@ nav li a:hover {
   background-size: cover;
   height: 100%;
   width: 100%;
-  /* background-transparent: 0.2; */
-  /*background:rgb(0,97,242);
-background:linear-gradient(135deg,rgba(0,97,242,1)0%,rgba(105,0,199,1)100%);*/
   clip-path: polygon(0 0, 100% 0, 100% 100%, 70% 95%, 0 100%);
 }
+
 .page-header {
   margin-top: 3.5rem;
   font-size: 40px;
   color: #000000;
+  padding: 4rem 0;
 }
+
 .page-header p {
-  margin-left: 50rem;
-  padding: 10rem 5rem 0rem 0rem;
+  margin-left: auto;
+  max-width: 550px;
+  padding: 4rem 1rem 1rem 0rem;
+  font-size: 2.2rem;
+  line-height: 1.3;
 }
+
 .page-header button {
-  margin-left: 50rem;
+  margin-left: auto;
+  display: block;
 }
+
 li {
-  padding-left: 2.5rem;
+  padding-left: 1rem;
 }
-.dev a{
+
+.dev a {
   text-decoration: none;
   color: black;
 }
-.page.dev{
+
+.page.dev {
   background: rgb(240, 240, 240);
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 80% 95%,0 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 80% 95%, 0 100%);
 }
-.dev .card{
-  width:350px; 
-  height:500px; 
-  box-shadow:2px 2px 14px 3px #726c6c;
-  background-color:rgb(240, 240, 240);
+
+.dev .card {
+  width: 100%;
+  max-width: 350px;
+  height: auto;
+  min-height: 450px;
+  box-shadow: 2px 2px 14px 3px #726c6c;
+  background-color: rgb(240, 240, 240);
 }
+
 .templates {
-  margin-bottom: 10rem;
+  margin-bottom: 5rem;
   background-size: cover;
   height: auto;
-  width: auto;
-  padding-bottom: 7rem;
+  width: 100%;
+  padding-bottom: 5rem;
   background: rgb(240, 240, 240);
-  clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 95%, 0 100%);
 }
+
 .templates h1 {
   padding-top: 3.5rem;
   text-align: center;
 }
+
 .templates p {
   padding: 1.5rem;
   text-align: center;
   font-size: 18px;
 }
-.templates img {
-  padding: rem;
-  border: 0px;
+
+.preview-card-img {
+  width: 100%;
+  max-height: 580px;
+  object-fit: cover;
+  object-position: top;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
 }
+
+.preview-card-img:hover {
+  transform: translateY(-5px);
+}
+
 .features h1 {
   margin: 0rem 0rem 2rem 0rem;
   text-align: center;
 }
+
 .page {
   margin-top: 2.5rem;
   background: rgb(240, 240, 240);
-  clip-path: polygon(0 0, 100% 0, 100% 70%, 0 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+  padding-bottom: 4rem;
 }
+
 .page-title {
-  margin: 4rem 0rem 2.5rem 7rem;
+  margin: 2rem 0rem 1rem 2rem;
 }
+
 .page-title-para {
-  margin: 0.5rem 0rem 2.5rem 7rem;
+  margin: 0.5rem 0rem 2rem 2rem;
 }
-form {
-  margin-left: 10rem;
-  padding-left: 10rem;
+
+.button-container {
+  margin-left: 2rem;
 }
+
+.Form {
+  margin-top: 3rem;
+  margin-bottom: 4rem;
+}
+
 .Form h1 {
-  margin: 5rem;
+  margin: 2rem 0;
   text-align: center;
 }
+
 .Form div {
-  margin-bottom: 2.5rem;
+  margin-bottom: 1rem;
 }
+
 .Form button {
-  margin-top: 2rem;
+  margin-top: 1rem;
 }
+
 footer {
   background-color: #000000;
   color: #ffffff;
+}
+
+/* Responsive Media Queries */
+@media (max-width: 992px) {
+  .page-header p {
+    margin-left: 0;
+    font-size: 1.8rem;
+    padding-top: 2rem;
+  }
+  .page-header button {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .gradient {
+    clip-path: none;
+  }
+  .templates, .page {
+    clip-path: none;
+  }
+  .page-header p {
+    font-size: 1.5rem;
+    text-align: center;
+    padding: 1rem 0;
+  }
+  .page-header button {
+    margin: 0 auto;
+    display: block;
+  }
+  .page-title, .page-title-para, .button-container {
+    margin-left: 0;
+    text-align: center;
+  }
 }

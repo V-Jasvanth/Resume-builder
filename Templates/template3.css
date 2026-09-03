@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap");
 * {
-  font-family: "Poppins";
+  font-family: "Poppins", sans-serif;
+  box-sizing: border-box;
 }
 html,
 body {
@@ -9,34 +10,70 @@ body {
 .t3 {
   display: block;
 }
+.t3 .palette {
+  margin-top: 40px;
+  margin-bottom: 0px;
+  text-align: center;
+}
+.t3 .pelement {
+  margin: 10px;
+  padding: 0 12px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: inline-block;
+}
+.t3 .one {
+  background-color: #151b29;
+  border: 3px solid transparent;
+}
+.t3 .two {
+  background-color: #003147;
+  border: 3px solid transparent;
+}
+.t3 .three {
+  background-color: #4b149b;
+  border: 3px solid transparent;
+}
+.t3 .four {
+  background-color: #b0292a;
+  border: 3px solid transparent;
+}
+.t3 .five {
+  background-color: #316834;
+  border: 3px solid transparent;
+}
 .t3 .clearfix {
   clear: both;
 }
 .t3 .main {
-  height: 1250px;
-  /* height: min-content; */
-  width: 800px;
+  min-height: 1000px;
+  height: auto;
+  width: 100%;
+  max-width: 850px;
   background-color: white;
   box-shadow: 5px 7px 15px 5px #b9b6b6;
   margin: 20px auto;
-  display: table;
+  display: flex;
+  flex-direction: column;
 }
 .t3 .top-section {
   background-color: #151b29;
   text-align: center;
-  padding: 20px;
-  height: 340px;
+  padding: 25px 20px;
+  transition: background-color 0.3s ease;
 }
 .t3 .profilepic {
-  width: 200px;
-  height: 200px;
-  border-radius: 200px;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid white;
 }
 .t3 .fname {
-  font-size: 40px;
+  font-size: 36px;
   color: white;
-  margin: 0px;
-  margin-top: 10px;
+  margin: 10px 0 0 0;
+  word-break: break-word;
 }
 .t3 .top-section span {
   color: #ffffff;
@@ -44,54 +81,59 @@ body {
 .t3 .position {
   font-size: 20px;
   color: #b1afaf;
-  margin: 0px;
-  margin-top: 10px;
+  margin: 5px 0 0 0;
+}
+.t3 .body-section {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
 }
 .t3 .col-div-4 {
   width: 35%;
-  float: left;
+  flex: 0 0 35%;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 .t3 .col-div-8 {
-  width: 62%;
-  float: left;
+  width: 63%;
+  flex: 0 0 63%;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 .t3 .line {
   border-left: 1px solid #b1afaf;
-  min-height: 800px;
   width: 2%;
-  float: left;
-  margin-top: 30px;
+  margin-top: 20px;
 }
 
 .t3 .content-box {
   padding: 20px;
+  word-break: break-word;
 }
 .t3 .head {
   font-size: 20px;
   text-transform: uppercase;
   font-weight: 650;
-}
-.t3 .fname {
-  margin: 0;
-}
-.t3 .position {
-  margin: 0;
+  word-break: break-word;
 }
 .t3 .p3 {
   color: #0a0a0a;
   margin: 0;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
+  word-break: break-word;
 }
-.t3 .fa {
+.t3 .fa, .t3 .fab, .t3 .fas {
   color: #151b29;
 }
 .t3 .skills {
   margin-left: -20px;
   margin-bottom: 0px;
+  word-break: break-word;
 }
 .t3 .skills li {
   list-style-type: circle;
   padding: 5px;
+  word-break: break-word;
 }
 .t3 .skills li span {
   color: #0a0a0a;
@@ -99,23 +141,72 @@ body {
 .t3 .interest {
   margin-left: -20px;
   margin-bottom: 0px;
+  word-break: break-word;
 }
 .t3 .interest li {
   list-style-type: circle;
   padding: 2px;
+  word-break: break-word;
 }
 .t3 .interest li span {
   color: #0a0a0a;
 }
 .t3 .par-4 {
   font-size: 14px;
-  /* color: #0a0a0a; */
   color: #525252;
+  word-break: break-word;
 }
 .t3 .experience .job-title {
   color: #184bb6;
   margin-bottom: 2px;
+  font-weight: 600;
+  word-break: break-word;
 }
 .t3 .education .degree {
   color: #184bb6;
+  font-weight: 600;
+  word-break: break-word;
+}
+
+@media (max-width: 768px) {
+  .t3 .body-section {
+    flex-direction: column;
+  }
+  .t3 .col-div-4, .t3 .col-div-8 {
+    width: 100%;
+    flex: 0 0 100%;
+  }
+  .t3 .line {
+    display: none;
+  }
+}
+
+/* Print Optimization & A4 Page Break Rules */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 10mm;
+  }
+  body, html {
+    background: #ffffff !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  .t3 .palette, .t3 .back-to-form, .dwnldimage, .printCv, nav, footer, .stepper-wrapper {
+    display: none !important;
+  }
+  .t3 .main {
+    box-shadow: none !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  .t3 .experience, .t3 .education, .t3 .achievements-box, .t3 .content-box {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+  .t3 .head {
+    break-after: avoid !important;
+    page-break-after: avoid !important;
+  }
 }

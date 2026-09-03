@@ -52,6 +52,8 @@
   margin: 40px;
   margin-top: 10px;
   margin-bottom: 10px;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 .t2 .upper {
   background-color: rgb(55, 177, 55);
@@ -59,9 +61,10 @@
   height: 6rem;
   text-align: center;
   color: #fff;
-  font-size: 50px;
-  padding-top: 0.2em;
+  font-size: 40px;
+  padding-top: 0.4em;
   font-weight: 400;
+  word-break: break-word;
 }
 .t2 .lower {
   display: grid;
@@ -74,6 +77,7 @@
   flex-direction: column;
   position: relative;
   margin-left: 40px;
+  word-break: break-word;
 }
 .t2 .header {
   margin-top: 20px;
@@ -85,6 +89,7 @@
   border: 3px solid white;
   height: 175px;
   width: 175px;
+  object-fit: cover;
 }
 .t2 .lower_left .personal {
   margin-top: 160px;
@@ -98,28 +103,34 @@
 }
 .t2 .lower_left .con {
   margin-bottom: 8px;
+  word-break: break-word;
 }
 .t2 .lower_left .content {
   font-size: 14px;
+  word-break: break-word;
 }
 .t2 .lower_left .content .heading {
   font-weight: 600;
 }
 .t2 .lower_left .content .value {
   font-weight: 400;
+  word-break: break-word;
 }
 .t2 .lower_left .skills .content {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   align-items: center;
   margin-bottom: 10px;
+  word-break: break-word;
 }
 .t2 .lower_left .skills .content .skill {
   margin-bottom: 1px;
+  word-break: break-word;
 }
 .t2 .interests .content {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  word-break: break-word;
 }
 .t2 .interests .content .con {
   margin-bottom: 1px;
@@ -131,13 +142,16 @@
   display: grid;
   margin-bottom: 10px;
   grid-template-columns: 100px 1fr;
+  word-break: break-word;
 }
 .t2 .lower_right {
   margin-right: 20px;
   color: gray;
+  word-break: break-word;
 }
 .t2 .lower_right .content {
   font-size: 13px;
+  word-break: break-word;
 }
 .t2 .hr {
   position: relative;
@@ -154,7 +168,6 @@
 }
 .t2 .vrr {
   position: relative;
-  /* overflow: hidden; */
 }
 .t2 .vrr::after {
   content: "";
@@ -171,6 +184,8 @@
   display: grid;
   grid-template-columns: 150px 1fr;
   position: relative;
+  break-inside: avoid;
+  page-break-inside: avoid;
 }
 .t2 .lower_right .con::before {
   content: "";
@@ -203,6 +218,7 @@
 }
 .t2 .achievements .val {
   overflow: hidden;
+  word-break: break-word;
 }
 .t2 .achievements .content {
   display: block;
@@ -224,5 +240,35 @@
   }
   .t2 .lower_left {
     justify-content: center;
+  }
+}
+
+/* Print Optimization & A4 Page Break Rules */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 10mm;
+  }
+  body, html {
+    background: #ffffff !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  .t2 .palette, .t2 .back-to-form, .dwnldimage, .printCv, nav, footer, .stepper-wrapper {
+    display: none !important;
+  }
+  .t2 .containerr {
+    box-shadow: none !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  .t2 .lower_right .con, .t2 .lower_left .con {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+  .t2 .title {
+    break-after: avoid !important;
+    page-break-after: avoid !important;
   }
 }

@@ -35,11 +35,15 @@
     <!-- NavBar -->
     <nav class="navbar navbar-default navbar-static-top fixed-top navbar-expand-lg navbar-light container-fluid NavBar"
         id="nav">
-        <div class="container">
-            <a class="navbar-brand mx-auto" href="index.html">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a class="navbar-brand me-auto" href="index.html">
                 <img src="images/RB.svg" alt="" height="50px">
             </a>
-            <div class="collapse navbar-collapse" id="nav-list">
+            <div class="d-flex align-items-center">
+                <span id="saveStatus" class="me-3 text-muted" style="font-size: 0.85rem; font-weight: 500; transition: opacity 0.3s; opacity: 0;"></span>
+                <button type="button" class="btn btn-outline-danger btn-sm" id="clearFormBtn" onclick="clearFormAndDraft()" title="Clear all saved data and start fresh">
+                    <i class="bi bi-trash me-1"></i>Start Fresh
+                </button>
             </div>
         </div>
     </nav>
@@ -47,6 +51,27 @@
 
 
     <div class="container-fluid p-0">
+
+        <!-- Progress Stepper -->
+        <div class="stepper-wrapper container mt-4 mb-3">
+            <div class="stepper d-flex justify-content-between align-items-center">
+                <div class="step-item step-item-1 active d-flex flex-column align-items-center text-center">
+                    <div class="step-counter">1</div>
+                    <div class="step-name">Personal Details</div>
+                </div>
+                <div class="step-line flex-grow-1"></div>
+                <div class="step-item step-item-2 d-flex flex-column align-items-center text-center">
+                    <div class="step-counter">2</div>
+                    <div class="step-name">Experience</div>
+                </div>
+                <div class="step-line flex-grow-1"></div>
+                <div class="step-item step-item-3 d-flex flex-column align-items-center text-center">
+                    <div class="step-counter">3</div>
+                    <div class="step-name">Select Template</div>
+                </div>
+            </div>
+        </div>
+        <!-- Progress Stepper End -->
 
         <!-- **********     FORM - 1    ********** -->
 
@@ -56,7 +81,7 @@
                 <h1 class="d-flex justify-content-center m-5" style="font-weight: 600;">Personal Details</h1>
             </div>
 
-            <div class="card-container mb-5 shadow p-3 mb-5 bg-white" style="width:850px; margin:auto" id="card">
+            <div class="card-container mb-5 shadow p-3 bg-white responsive-card-container" id="card">
                 <div class="d-flex mt-3 mx-3">
                     <h6>Personal Details</h6>
                 </div>
@@ -132,6 +157,11 @@
                                 <option>Other</option>
                             </select>
                         </div>
+                        <div class="col-md-4 mt-3">
+                            <label for="resume_title" class="form-label">Resume Title / Header</label>
+                            <input type="text" class="form-control" id="resume_title" placeholder="Curriculum Vitae">
+                        </div>
+                    </div>
 
                         <div class="col-md-4 mt-3">
                             <label for="dob" class="form-label">Birth Date</label>
@@ -153,7 +183,7 @@
 
             </div>
 
-            <div class="btn-box container d-block text-center" style="width:850px;">
+            <div class="btn-box container d-block text-center responsive-btn-box">
                 <button type="button" class="next_btn" id="next1">Next Step<i
                         class="bi bi-arrow-right-circle ms-3"></i></button>
             </div>
@@ -173,7 +203,7 @@
                 <h1 class="d-flex justify-content-center m-5" style="font-weight: 600;">My experiences</h1>
             </div>
 
-            <div class="card-container shadow mb-5 p-3 mb-5 bg-white" style="width:850px; margin:auto" id="card">
+            <div class="card-container shadow mb-5 p-3 bg-white responsive-card-container" id="card">
                 <div class="d-flex mt-3 mx-3">
                     <h6>My experiences</h6>
                 </div>
@@ -614,7 +644,7 @@
                 </div>
             </div>
 
-            <div class="btn_box container d-block text-center" style="width:850px;">
+            <div class="btn_box container d-block text-center responsive-btn-box">
                 <button type="button" class="prev_btn" id="back2"><i class="bi bi-arrow-left-circle me-3"></i>Previous
                     Step</button>
                 <button type="button" class="next_btn" id="next2">Next Step<i
@@ -637,7 +667,7 @@
                     Template</h1>
             </div>
 
-            <div class="card-container shadow mb-5 p-3 mb-5 bg-white" style="width:65%; margin:auto" id="card">
+            <div class="card-container shadow mb-5 p-3 bg-white responsive-card-container" id="card">
                 <div class="d-flex mt-3 mx-3">
                     <h6>Select Template</h6>
                 </div>
@@ -699,7 +729,7 @@
             </div>
             <!-- <button type="button" onclick="template_selector()" class="next_btn" id="generatecv">Generate CV<i
                     class="bi bi-arrow-right-circle ms-3"></i></button> -->
-            <div class="btn-box container d-block text-center" style="width:850px;">
+            <div class="btn-box container d-block text-center responsive-btn-box">
                 <button type="button" class="prev_btn" id="back2"><i class="bi bi-arrow-left-circle me-3"></i>Previous
                     Step</button>
                 <button type="button" onclick="template_selector()" class="generateCv_btn" id="generatecv">Generate CV
@@ -1073,6 +1103,7 @@
                     </div>
                 </div>
             </div>
+            </div>
         </div>
         <div>
             <button type="button" class="btn btn-primary btn-lg mt-5 mb-5 mx-4 dwnldimage">Download
@@ -1093,6 +1124,13 @@
                     style="font-size: 23px; margin-left: 10px; margin-right: 10px;">Back to form</span>
             </div>
         </a>
+        <div class="palette">
+            <span class="pelement one"></span>
+            <span class="pelement two"></span>
+            <span class="pelement three"></span>
+            <span class="pelement four"></span>
+            <span class="pelement five"></span>
+        </div>
         <div class="main">
             <div class="top-section">
                 <img src="images/person.jfif" class="profilepic">
@@ -1102,6 +1140,7 @@
             </div>
 
             <div class="clearfix"></div>
+            <div class="body-section">
             <div class="col-div-4">
                 <div class="content-box" style="padding-left: 40px;">
                     <p class="head">Contact</p>
@@ -1253,8 +1292,25 @@
         });
 
         let index = 0;
+        function updateStepper(idx) {
+            $('.step-item').removeClass('active completed');
+            $('.step-line').removeClass('active');
+            
+            if (idx >= 0) {
+                $('.step-item-1').addClass(idx === 0 ? 'active' : 'completed');
+            }
+            if (idx >= 1) {
+                $('.step-line:eq(0)').addClass('active');
+                $('.step-item-2').addClass(idx === 1 ? 'active' : 'completed');
+            }
+            if (idx >= 2) {
+                $('.step-line:eq(1)').addClass('active');
+                $('.step-item-3').addClass('active');
+            }
+        }
+
         function changeStep(btn) {
-            let active = document.querySelector('form.step.active')
+            let active = document.querySelector('form.step.active');
             index = steps.indexOf(active);
             steps[index].classList.remove('active');
             if (btn === 'next') {
@@ -1264,6 +1320,7 @@
             else if (btn === 'prev')
                 index--;
             steps[index].classList.add('active');
+            updateStepper(index);
         }
 
 

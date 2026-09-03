@@ -209,12 +209,109 @@ div[class*="panel"] {
   background-color: #80808088;
 }
 
-.back-to-form{
-  background-color: #80808091;
+.back-to-form {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 1050;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 42px;
+  padding: 6px 16px;
+  background-color: rgba(40, 44, 52, 0.85);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 25px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(4px);
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
-.back-to-form:hover{
-  background-color: #80808080;
+
+.back-to-form:hover {
+  background-color: #626ccc;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(98, 108, 204, 0.4);
+}
+
+/* Stepper Styling */
+.stepper-wrapper {
+  max-width: 750px;
+  margin: 0 auto;
+}
+
+.step-counter {
+  height: 38px;
+  width: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: #e0e0e0;
+  color: #555;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.step-name {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #666;
+  margin-top: 6px;
+}
+
+.step-item.active .step-counter {
+  background-color: #626ccc;
+  color: #fff;
+  box-shadow: 0 0 0 3px rgba(98, 108, 204, 0.2);
+}
+
+.step-item.active .step-name {
+  color: #626ccc;
+  font-weight: 700;
+}
+
+.step-item.completed .step-counter {
+  background-color: #43c5a4;
+  color: #fff;
+}
+
+.step-item.completed .step-name {
+  color: #43c5a4;
+  font-weight: 600;
+}
+
+.step-line {
+  height: 3px;
+  background-color: #e0e0e0;
+  margin: 0 10px;
+  margin-bottom: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.step-line.active {
+  background-color: #43c5a4;
+}
+
+/* Responsive Containers */
+.responsive-card-container {
+  width: 100%;
+  max-width: 850px;
+  margin: auto;
+}
+
+.responsive-btn-box {
+  width: 100%;
+  max-width: 850px;
+  margin: auto;
+}
+
+.invalid-feedback-msg {
+  font-size: 0.8rem;
+  margin-top: 4px;
 }
 
 /* Scroll Bar  */
@@ -236,4 +333,82 @@ div[class*="panel"] {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #7c7c7c;
+}
+
+/* Responsive Media Queries */
+@media (max-width: 992px) {
+  .responsive-card-container,
+  .responsive-btn-box {
+    width: 92% !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .responsive-card-container,
+  .responsive-btn-box {
+    width: 96% !important;
+    padding: 1rem !important;
+  }
+  .next_btn, .prev_btn, .generateCv_btn {
+    width: 140px !important;
+    font-size: 0.9rem !important;
+    margin: 10px 4px !important;
+  }
+  .back-to-form {
+    top: 10px;
+    left: 10px;
+    padding: 4px 12px;
+    height: 36px;
+    font-size: 13px;
+  }
+  .step-name {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .next_btn, .prev_btn, .generateCv_btn {
+    width: 100% !important;
+    margin: 6px 0 !important;
+  }
+  .btn-box, .btn_box {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+  .step-name {
+    display: none;
+  }
+  .step-counter {
+    height: 32px;
+    width: 32px;
+    font-size: 0.85rem;
+  }
+}
+
+/* Print Optimization */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 10mm;
+  }
+  body, html {
+    background: #ffffff !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  .back-to-form, .dwnldimage, .printCv, .palette, #nav, .stepper-wrapper, form.step, nav, footer, button {
+    display: none !important;
+  }
+  .template.container-fluid {
+    display: block !important;
+    background-color: #ffffff !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+  }
 }

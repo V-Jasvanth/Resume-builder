@@ -142,6 +142,9 @@ function generateCV(template) {
     $(`#${template} #t_gender`).text($('#gender').val() || '');
     $(`#${template} #t_email`).text($('#email').val() || '');
     $(`#${template} #t_number`).text($('#number').val() || '');
+    
+    let resumeTitle = $('#resume_title').val() ? $('#resume_title').val().trim() : 'Curriculum Vitae';
+    $('.t2 .upper').text(resumeTitle);
 
     let cityVal = $('#city').val();
     let stateVal = $('#state').val();
