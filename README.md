@@ -1,39 +1,62 @@
 # Resume Builder
 
-A modern, browser-based Resume Builder web application that allows users to quickly create, customize, preview, and export professional resumes. Built entirely with standard web technologies, all resume draft data is kept private and stored locally in the user's browser using localStorage without requiring a backend server or account creation.
+A modern, browser-based Resume Builder web application that allows users to quickly create, customize, preview, and export professional resumes. Built entirely with standard client-side web technologies, all resume draft data is kept private and stored locally in the user's browser using `localStorage` without requiring a backend server, user authentication, or database setup.
+
+---
+
+## Live Demo
+
+Experience the live application hosted on GitHub Pages:
+👉 [Resume Builder Live Demo](https://v-jasvanth.github.io/Resume-builder/)
+
+---
+
+## Project Preview
+
+| Stanford Template | Harvard Template | Edinburgh Template |
+| :---: | :---: | :---: |
+| ![Stanford Template](images/T1.PNG) | ![Harvard Template](images/T2.PNG) | ![Edinburgh Template](images/T3.PNG) |
+
+---
+
+## How It Works
+
+1. **Enter Personal Details**: Fill in your contact information, profile photo, and an optional custom resume title.
+2. **Add Experience & Background**: Add your educational qualifications, work history, skills, hobbies, languages, and achievements using responsive, dynamic forms.
+3. **Select Template & Palette**: Choose from three resume layouts (Stanford, Harvard, Edinburgh) and customize header/sidebar color swatches.
+4. **Preview & Export**: Instantly preview your formatted resume and export it as an A4 PDF document (`window.print()`) or download it as a PNG image (`HTML5 Canvas`).
 
 ---
 
 ## Key Features
 
-- **Multi-Step Resume Form**: Structured step-by-step form interface (Personal Details → Experience & Qualifications → Template & Color Selection).
+- **Multi-Step Form Interface**: Guided form navigation for Personal Details, Experience, and Template Selection.
 - **Comprehensive Resume Content Sections**:
-  - Personal Information & Custom Resume Title
+  - Personal Information & Custom Resume Header
   - Educational Background & Qualifications
   - Work Experience & Employment History
   - Skills & Core Competencies
   - Hobbies & Personal Interests
   - Languages Spoken & Proficiency
-  - Key Achievements & Summary
-- **Profile Photo Upload**: Real-time profile photo preview with client-side format validation (JPG, JPEG, PNG, GIF, WEBP) and file size restriction (max 3 MB).
-- **Automatic Draft Persistence**: Progress auto-saves continuously to `localStorage` as you type, allowing users to return and resume work seamlessly across browser refreshes.
-- **Start Fresh / Clear Form**: One-click control to reset form fields and delete saved draft data after confirmation.
+  - Key Achievements & Profile Summary
+- **Profile Photo Upload**: Real-time profile photo preview with client-side format validation (JPG, JPEG, PNG, GIF, WEBP) and 3 MB size limit.
+- **Automatic Draft Persistence**: Continuous `localStorage` auto-saving as you type, preserving work across browser reloads.
+- **Start Fresh / Clear Form**: One-click control to reset form fields and delete saved draft data after user confirmation.
 - **Multiple Professional Templates**:
   - **Stanford (Template 1)**: Sleek two-column layout with bold sidebar header accents and structured section boxes.
   - **Harvard (Template 2)**: Classic single/double header layout with prominent title header, circular avatar, and clean horizontal dividers.
   - **Edinburgh (Template 3)**: Modern dark header theme with side-by-side contact details, skill lists, and timeline experiences.
-- **Dynamic Color Customization**: Live palette swatches for selecting custom header and sidebar accent colors across templates.
+- **Dynamic Color Customization**: Live palette swatches for selecting custom header and sidebar accent colors across all templates.
 - **Flexible Export Options**:
   - **Print / Save as PDF**: Optimized `@media print` CSS rules for A4 page dimensions, hiding all UI controls, buttons, and navigation elements.
   - **PNG Image Export**: High-resolution image export using native HTML5 Canvas Blob generation.
-- **Form Validation & Real-time Feedback**: Field validation with descriptive inline error messages for required fields, email format, phone numbers, and portfolio URLs.
+- **Form Validation & Real-time Feedback**: Descriptive inline validation error messages for required fields, email format, phone numbers, and URLs.
 - **Security & Privacy**: Client-side XSS protection with HTML escaping, no external API keys required, offline location fallback dropdowns (Country, State, City), and 100% local storage.
-- **Responsive Layout**: Fluid design optimized for desktops, laptops, tablets, and mobile devices (320px to 1200px+).
-- **Additional Pages**: Homepage showcase with template previews and interactive FAQ page.
+- **Responsive Layout**: Fluid design optimized for desktop, tablet, and mobile screens (320px to 1200px+).
 
 ---
 
-## Templates
+## Templates Overview
 
 1. **Stanford (Template 1)**: Ideal for corporate, tech, and engineering roles requiring a clear separation between core contact details/skills and detailed employment history.
 2. **Harvard (Template 2)**: Ideal for academic, research, management, and executive applications featuring a traditional structured layout and prominent custom header.
@@ -75,30 +98,29 @@ Resume-Builder/
 
 ---
 
-## How to Run
+## How to Run Locally
 
 Because this is a pure client-side web application, no server installation or build steps (`npm install` or `npm start`) are required.
 
-1. **Download or Clone the Repository**:
+1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/your-username/Resume-Builder.git
+   git clone https://github.com/V-Jasvanth/Resume-builder.git
    ```
 2. **Open the Project Folder** in VS Code or your preferred text editor.
 3. **Launch the Application**:
-   - Double-click `index.html` to open it directly in any modern browser (Chrome, Firefox, Edge, Safari).
+   - Double-click `index.html` to open it directly in any modern web browser.
    - Alternatively, right-click `index.html` in VS Code and select **Open with Live Server**.
-4. Click **Create Resume** to start building your resume.
 
 ---
 
-## Deployment Readiness
+## Deployment Information
 
-This application is 100% static and ready for instant deployment on static hosting platforms such as:
+This application is static and ready for instant deployment on static hosting platforms such as:
 - **GitHub Pages**
 - **Netlify**
 - **Vercel**
 
-Since `index.html` is located at the root directory and all assets use clean relative paths, deploying requires simply pointing your host to the main branch.
+Since `index.html` is located at the root directory and all assets use clean relative paths, deploying requires simply pointing your static web host to the `main` branch.
 
 ---
 
