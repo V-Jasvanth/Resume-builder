@@ -127,3 +127,12 @@ Since `index.html` is located at the root directory and all assets use clean rel
 ## Privacy & Security
 
 All resume data entered into the application remains on your local device. The application reads and writes draft states directly to your browser's `localStorage` and processes images locally via the `FileReader` API. No personal data, email addresses, or uploaded documents are transmitted to remote servers.
+
+## Future Enhancements
+
+- Additional resume templates and layout customization
+- More advanced resume customization options
+- Improved accessibility and keyboard navigation
+- Additional export and sharing options
+- Further responsive UI improvements
+- Optional AI-assisted resume content suggestions
