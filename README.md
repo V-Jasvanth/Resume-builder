@@ -95,9 +95,7 @@ Resume-Builder/
 │   └── template3.css       # Edinburgh template styles
 └── images/                 # SVG logos, assets, and template previews
 ```
-
 ---
-
 ## How to Run Locally
 
 Because this is a pure client-side web application, no server installation or build steps (`npm install` or `npm start`) are required.
@@ -110,22 +108,15 @@ Because this is a pure client-side web application, no server installation or bu
 3. **Launch the Application**:
    - Double-click `index.html` to open it directly in any modern web browser.
    - Alternatively, right-click `index.html` in VS Code and select **Open with Live Server**.
-
 ---
-
 ## Deployment Information
-
 This application is static and ready for instant deployment on static hosting platforms such as:
 - **GitHub Pages**
 - **Netlify**
 - **Vercel**
-
 Since `index.html` is located at the root directory and all assets use clean relative paths, deploying requires simply pointing your static web host to the `main` branch.
-
 ---
-
-## Privacy & Security
-
+# Privacy & Security
 All resume data entered into the application remains on your local device. The application reads and writes draft states directly to your browser's `localStorage` and processes images locally via the `FileReader` API. No personal data, email addresses, or uploaded documents are transmitted to remote servers.
 
 ## Future Enhancements
