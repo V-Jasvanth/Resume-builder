@@ -701,6 +701,20 @@ function appendEduItemWithData(item, count) {
   updateEdu();
 }
 
+function updateCharCounter(elem) {
+  let $elem = $(elem);
+  let max = $elem.attr('maxlength');
+  if (!max) return;
+  let len = $elem.val().length;
+  let $counter = $elem.next('.char-counter');
+  if (!$counter.length) {
+    $counter = $elem.parent().find('.char-counter');
+  }
+  if ($counter.length) {
+    $counter.text(`${len} / ${max} characters`);
+  }
+}
+
 function appendWorkItemWithData(item, count) {
   $("#accordionWork").append(workAdder);
   let $item = $("#accordionWork .accordion-item").last();
@@ -709,6 +723,7 @@ function appendWorkItemWithData(item, count) {
   $item.find('.work_start').val(item.startDate || '');
   $item.find('.end_date').val(item.endDate || '');
   $item.find('.work_desc').val(item.description || '');
+  updateCharCounter($item.find('.work_desc'));
   if (item.isPresent) {
     $item.find('.end_date_toggle').prop('checked', true);
     let $endInput = $item.find('.end_date');
@@ -837,6 +852,10 @@ function loadDraft() {
       });
     }
 
+    $('textarea[maxlength]').each(function () {
+      updateCharCounter(this);
+    });
+
     $('#saveStatus').text('Draft restored').css('opacity', '1');
     setTimeout(function () {
       $('#saveStatus').css('opacity', '0.6');
@@ -853,6 +872,10 @@ $(document).ready(function () {
   handleCityFallback();
 
   loadDraft();
+
+  $(document).on('input change keyup', 'textarea[maxlength]', function () {
+    updateCharCounter(this);
+  });
 
   $(document).on('input change', '#form1 input, #form1 select, #form2 input, #form2 select, #form2 textarea, #form3 input', function () {
     triggerAutoSave();

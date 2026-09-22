@@ -314,6 +314,14 @@ div[class*="panel"] {
   margin-top: 4px;
 }
 
+.char-counter {
+  font-size: 0.78rem;
+  color: #6c757d;
+  text-align: right;
+  margin-top: 4px;
+  user-select: none;
+}
+
 /* Scroll Bar  */
 
 ::-webkit-scrollbar {

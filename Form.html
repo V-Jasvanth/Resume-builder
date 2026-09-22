@@ -226,7 +226,8 @@
                                 <div class="row mx-2 mb-5">
                                     <div class="mt-4">
                                         <label for="profile" class="form-label">Profile</label>
-                                        <textarea class="form-control" id="profile" rows=6></textarea>
+                                        <textarea class="form-control" id="profile" rows=6 maxlength="500"></textarea>
+                                        <div class="char-counter text-muted text-end small mt-1">0 / 500 characters</div>
                                     </div>
                                 </div>
                             </div>
@@ -411,7 +412,8 @@
                                                             <label for="work_description"
                                                                 class="form-label">Description</label>
                                                             <textarea class="form-control work_desc"
-                                                                id="work_description" rows="3"></textarea>
+                                                                id="work_description" rows="3" maxlength="300"></textarea>
+                                                            <div class="char-counter work_desc_counter text-muted text-end small mt-1">0 / 300 characters</div>
                                                         </div>
                                                     </div>
 
@@ -565,7 +567,8 @@
                                 <div class="row mx-2 mb-5">
                                     <div class="mt-4">
                                         <label for="achv_description" class="form-label">Description</label>
-                                        <textarea class="form-control" id="achv_description" rows=6></textarea>
+                                        <textarea class="form-control" id="achv_description" rows=6 maxlength="400"></textarea>
+                                        <div class="char-counter text-muted text-end small mt-1">0 / 400 characters</div>
                                     </div>
                                 </div>
                             </div>
