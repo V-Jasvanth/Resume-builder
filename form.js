@@ -588,10 +588,31 @@ function templateRadioSelector(ele) {
 //  **********    **********  LocalStorage Persistence Engine   **********    **********
 
 let autoSaveTimeout = null;
+let savedRecentlyTimeout = null;
+
+function setSaveStatus(text, type) {
+  let $status = $('#saveStatus');
+  if (!$status.length) return;
+
+  if (type === 'error') {
+    $status.text(text).css({ 'opacity': '1', 'color': '#dc3545' });
+  } else if (type === 'saving') {
+    $status.text(text).css({ 'opacity': '1', 'color': '#6c757d' });
+  } else if (type === 'saved') {
+    $status.text(text).css({ 'opacity': '1', 'color': '#198754' });
+  } else if (type === 'restored' || type === 'cleared') {
+    $status.text(text).css({ 'opacity': '1', 'color': '#0d6efd' });
+  } else {
+    $status.text(text).css({ 'opacity': '0.75', 'color': '#6c757d' });
+  }
+}
 
 function triggerAutoSave() {
   if (autoSaveTimeout) clearTimeout(autoSaveTimeout);
-  $('#saveStatus').text('Saving...').css('opacity', '1');
+  if (savedRecentlyTimeout) clearTimeout(savedRecentlyTimeout);
+
+  setSaveStatus('Saving...', 'saving');
+
   autoSaveTimeout = setTimeout(function () {
     saveDraft();
   }, 400);
@@ -666,20 +687,26 @@ function saveDraft() {
     });
 
     localStorage.setItem('resumeBuilderDraft', JSON.stringify(draft));
-    $('#saveStatus').text('Draft saved').css('opacity', '1');
-    setTimeout(function () {
-      $('#saveStatus').css('opacity', '0.6');
-    }, 2000);
+    setSaveStatus('Saved just now', 'saved');
+
+    if (savedRecentlyTimeout) clearTimeout(savedRecentlyTimeout);
+    savedRecentlyTimeout = setTimeout(function () {
+      setSaveStatus('Saved recently', 'default');
+    }, 15000);
+
   } catch (e) {
     console.warn('Could not save draft to localStorage:', e);
-    $('#saveStatus').text('Save error').css('opacity', '1');
+    setSaveStatus('Save failed — please try again', 'error');
   }
 }
 
 function clearFormAndDraft() {
   if (confirm("Are you sure you want to clear all entered data and start fresh? This will delete your saved draft.")) {
+    setSaveStatus('Form cleared', 'cleared');
     localStorage.removeItem('resumeBuilderDraft');
-    location.reload();
+    setTimeout(function () {
+      location.reload();
+    }, 200);
   }
 }
 
@@ -856,10 +883,11 @@ function loadDraft() {
       updateCharCounter(this);
     });
 
-    $('#saveStatus').text('Draft restored').css('opacity', '1');
-    setTimeout(function () {
-      $('#saveStatus').css('opacity', '0.6');
-    }, 2500);
+    setSaveStatus('Draft restored', 'restored');
+    if (savedRecentlyTimeout) clearTimeout(savedRecentlyTimeout);
+    savedRecentlyTimeout = setTimeout(function () {
+      setSaveStatus('Saved recently', 'default');
+    }, 3500);
 
   } catch (e) {
     console.error('Error loading draft from localStorage:', e);
