@@ -730,15 +730,29 @@ function appendEduItemWithData(item, count) {
 
 function updateCharCounter(elem) {
   let $elem = $(elem);
-  let max = $elem.attr('maxlength');
-  if (!max) return;
+  let max = parseInt($elem.attr('maxlength'), 10);
+  if (!max || isNaN(max)) return;
+
   let len = $elem.val().length;
+  let ratio = len / max;
+
   let $counter = $elem.next('.char-counter');
   if (!$counter.length) {
     $counter = $elem.parent().find('.char-counter');
   }
+
   if ($counter.length) {
-    $counter.text(`${len} / ${max} characters`);
+    $counter.removeClass('char-warning char-danger char-limit');
+
+    if (len >= max) {
+      $counter.text(`${len} / ${max} characters (Limit reached)`).addClass('char-limit');
+    } else if (ratio >= 0.95) {
+      $counter.text(`${len} / ${max} characters`).addClass('char-danger');
+    } else if (ratio >= 0.80) {
+      $counter.text(`${len} / ${max} characters`).addClass('char-warning');
+    } else {
+      $counter.text(`${len} / ${max} characters`);
+    }
   }
 }
 

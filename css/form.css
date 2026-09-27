@@ -320,6 +320,22 @@ div[class*="panel"] {
   text-align: right;
   margin-top: 4px;
   user-select: none;
+  transition: color 0.2s ease, font-weight 0.2s ease;
+}
+
+.char-counter.char-warning {
+  color: #d97706;
+  font-weight: 500;
+}
+
+.char-counter.char-danger {
+  color: #dc3545;
+  font-weight: 600;
+}
+
+.char-counter.char-limit {
+  color: #b0292a;
+  font-weight: 700;
 }
 
 /* Scroll Bar  */
