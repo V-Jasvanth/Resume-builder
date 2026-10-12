@@ -68,29 +68,88 @@ function toggChk(el) {
   triggerAutoSave();
 }
 
+function getRequiredFieldMessage(el) {
+  let $el = $(el);
+  let id = $el.attr('id') || '';
+
+  if ($el.hasClass('imgContainer') || id === 'inpImg') {
+    return "Please upload a profile photo.";
+  }
+  if (id === 'fname') return "Please enter your first name.";
+  if (id === 'lname') return "Please enter your last name.";
+  if (id === 'email') return "Please enter your email address.";
+  if (id === 'number') return "Please enter your phone number.";
+  if (id === 'address') return "Please enter your street address.";
+  if (id === 'country' || $el.is('#country')) return "Please select your country.";
+  if (id === 'state' || $el.is('#state')) return "Please select your state or province.";
+  if (id === 'city' || $el.is('#city')) return "Please select your city.";
+  if (id === 'zip') return "Please enter your postal/zip code.";
+  if (id === 'dob') return "Please select your date of birth.";
+
+  if ($el.hasClass('job_title') || id === 'job_title') return "Please enter your job title.";
+  if ($el.hasClass('company_name') || id === 'company_name') return "Please enter the company name.";
+  if ($el.hasClass('work_start')) return "Please select your work start date.";
+  if ($el.hasClass('end_date')) return "Please select an end date or check Present.";
+  if ($el.hasClass('degree') || id === 'degree') return "Please enter your degree or qualification.";
+  if ($el.hasClass('school') || id === 'school') return "Please enter your school or institution.";
+  if ($el.hasClass('edu_start')) return "Please select your education start date.";
+  if ($el.hasClass('skill')) return "Please enter a skill.";
+  if ($el.hasClass('hobby')) return "Please enter an interest or hobby.";
+  if ($el.hasClass('lang')) return "Please enter a language.";
+
+  let labelText = $el.closest('div').find('> label').text().trim();
+  if (labelText) {
+    return `Please enter ${labelText.toLowerCase()}.`;
+  }
+  return "This field is required.";
+}
+
 function showFieldError(el, msg) {
-  $(el).css({ "border": "1.5px solid red" });
-  let $parent = $(el).parent();
-  let $errSpan = $parent.find('.invalid-feedback-msg');
+  let $el = $(el);
+  $el.addClass('is-invalid-field').css({ "border": "1.5px solid #dc3545" });
+  let $parent = $el.parent();
+  let $errSpan = $el.siblings('.invalid-feedback-msg');
   if (!$errSpan.length) {
-    $parent.append(`<span class="invalid-feedback-msg text-danger small mt-1 d-block">${msg}</span>`);
+    $errSpan = $parent.find('> .invalid-feedback-msg');
+  }
+  if (!$errSpan.length) {
+    $el.after(`<span class="invalid-feedback-msg text-danger small mt-1 d-block">${msg}</span>`);
   } else {
     $errSpan.text(msg).show();
   }
 }
 
 function clearFieldError(el) {
-  $(el).css({ "border": "1.5px solid rgb(206, 212, 218)" });
-  $(el).parent().find('.invalid-feedback-msg').remove();
+  let $el = $(el);
+  $el.removeClass('is-invalid-field').css({ "border": "1.5px solid rgb(206, 212, 218)" });
+  if ($el.hasClass('imgContainer')) {
+    let img = document.getElementById('image');
+    if (img && img.getAttribute('src')) {
+      $el.css({ "border": "none" });
+    }
+  }
+  $el.siblings('.invalid-feedback-msg').remove();
+  $el.parent().find('> .invalid-feedback-msg').remove();
 }
 
 function validate_chg_color(el) {
   let isValid = true;
-  let errorMsg = "This field is required.";
+  let errorMsg = "";
 
   if ($(el).hasClass('end_date')) {
-    let chk_pre = $(el).parent().next('div').find('input')[0].checked;
+    let chk_pre = $(el).parent().next('div').find('input')[0]?.checked;
     if (chk_pre) {
+      clearFieldError(el);
+      return true;
+    }
+  }
+
+  if ($(el).hasClass('imgContainer')) {
+    let hasImg = ($('#inpImg').val() !== "") || ($('#image').attr('src') && $('#image').attr('src').trim() !== "");
+    if (!hasImg) {
+      showFieldError(el, "Please upload a profile photo.");
+      return false;
+    } else {
       clearFieldError(el);
       return true;
     }
@@ -99,26 +158,38 @@ function validate_chg_color(el) {
   let val = $.trim($(el).val());
   let id = $(el).attr('id');
 
-  if ($(el).attr('type') == 'checkbox') {
+  if ($(el).attr('type') === 'checkbox') {
     clearFieldError(el);
     return true;
   }
-  else if (id === 'number' && val !== '') {
-    isValid = validatePhone(val);
-    errorMsg = "Please enter a valid phone number.";
+  else if (id === 'number') {
+    if (val === '') {
+      isValid = false;
+      errorMsg = "Please enter your phone number.";
+    } else {
+      isValid = validatePhone(val);
+      errorMsg = "Please enter a valid phone number (e.g. +1 555-019-2834).";
+    }
   }
-  else if ((id === 'website' || id === 'linkedIn') && val !== '') {
-    isValid = validateURL(val);
-    errorMsg = "Please enter a valid URL (e.g. https://example.com).";
+  else if (id === 'website' || id === 'linkedIn') {
+    if (val !== '') {
+      isValid = validateURL(val);
+      errorMsg = "Please enter a valid URL (e.g. https://example.com).";
+    }
   }
-  else if ($(el).attr('type') === 'email' && val !== '') {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    isValid = emailRegex.test(val);
-    errorMsg = "Please enter a valid email address.";
+  else if ($(el).attr('type') === 'email') {
+    if (val === '') {
+      isValid = false;
+      errorMsg = "Please enter your email address.";
+    } else {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      isValid = emailRegex.test(val);
+      errorMsg = "Please enter a valid email address (e.g. name@example.com).";
+    }
   }
-  else if (val == '' || val == 'Select level' || val == 'Select Country' || val == 'Select State' || val == 'Select City') {
+  else if (val === '' || val === 'Country' || val === 'State' || val === 'City' || val === 'Select Country' || val === 'Select State' || val === 'Select City' || val === 'Select level') {
     isValid = false;
-    errorMsg = "This field is required.";
+    errorMsg = getRequiredFieldMessage(el);
   }
 
   if (!isValid) {
@@ -133,27 +204,61 @@ function validate_chg_color(el) {
 
 function validate_form1(btn) {
   let finalValid = true;
-  let isValid = true;
+  let firstInvalid = null;
+
   let img_div = document.getElementsByClassName('imgContainer')[0];
-  if ($('#inpImg').val() == "" && $('#image').attr('src') == "") { validate_chg_color(img_div); isValid = false; finalValid = false; }
+  let hasImage = ($('#inpImg').val() !== "") || ($('#image').attr('src') && $('#image').attr('src').trim() !== "");
+  if (!hasImage) {
+    validate_chg_color(img_div);
+    finalValid = false;
+    if (!firstInvalid) firstInvalid = img_div;
+  } else {
+    clearFieldError(img_div);
+  }
+
   $('#form1').find('select').each(function () {
     let val = $(this).val();
-    if (val === 'Country' || val === 'State' || val === 'City' || val === '' || val === null) {
-      isValid = validate_chg_color(this);
-      if (!isValid) { finalValid = false; }
+    if (val === 'Country' || val === 'State' || val === 'City' || val === '' || val === null || val === 'Select Country' || val === 'Select State' || val === 'Select City') {
+      let isVal = validate_chg_color(this);
+      if (!isVal) {
+        finalValid = false;
+        if (!firstInvalid) firstInvalid = this;
+      }
     } else {
-      $(this).css({ "border": "1.5px solid rgb(206, 212, 218)" });
+      clearFieldError(this);
     }
   });
-  $('#form1').find('input').each(function () {
-    if ($(this).attr('id') == 'linkedIn' || $(this).attr('id') == 'website') {
-      if (!validate_chg_color(this)) finalValid = false;
-    }
-    else {
-      isValid = validate_chg_color(this);
-      if (!isValid) { finalValid = false; }
+
+  $('#form1').find('input:not([type="file"])').each(function () {
+    let id = $(this).attr('id');
+    if (id === 'linkedIn' || id === 'website' || id === 'resume_title') {
+      let val = $.trim($(this).val());
+      if (val !== '') {
+        if (!validate_chg_color(this)) {
+          finalValid = false;
+          if (!firstInvalid) firstInvalid = this;
+        }
+      } else {
+        clearFieldError(this);
+      }
+    } else {
+      let isVal = validate_chg_color(this);
+      if (!isVal) {
+        finalValid = false;
+        if (!firstInvalid) firstInvalid = this;
+      }
     }
   });
+
+  if (!finalValid && firstInvalid) {
+    if (typeof firstInvalid.focus === 'function') {
+      firstInvalid.focus();
+    }
+    if (typeof firstInvalid.scrollIntoView === 'function') {
+      firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+
   return finalValid;
 }
 
@@ -195,10 +300,23 @@ let workCounter = 1;
 $("#add_work").click(function (e) {
   let isValid = true;
   let finalValid = true;
-  $("#accordionWork .accordion-item:last-child").find("input").each(function () { isValid = validate_chg_color(this); if (!isValid) { finalValid = false; } });
+  let firstInvalid = null;
+  $("#accordionWork .accordion-item:last-child").find("input").each(function () {
+    isValid = validate_chg_color(this);
+    if (!isValid) {
+      finalValid = false;
+      if (!firstInvalid) firstInvalid = this;
+    }
+  });
 
   if (!finalValid) {
     e.preventDefault();
+    if (firstInvalid) {
+      firstInvalid.focus();
+      if (firstInvalid.scrollIntoView) {
+        firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
   }
   else {
     updateWork();
@@ -259,10 +377,23 @@ let eduCounter = 1;
 $("#add_edu").click(function (e) {
   let isValid = true;
   let finalValid = true;
-  $('#accordionEdu .accordion-item:last-child').find('input').each(function () { isValid = validate_chg_color(this); if (!isValid) { finalValid = false; } });
+  let firstInvalid = null;
+  $('#accordionEdu .accordion-item:last-child').find('input').each(function () {
+    isValid = validate_chg_color(this);
+    if (!isValid) {
+      finalValid = false;
+      if (!firstInvalid) firstInvalid = this;
+    }
+  });
 
   if (!finalValid) {
     e.preventDefault();
+    if (firstInvalid) {
+      firstInvalid.focus();
+      if (firstInvalid.scrollIntoView) {
+        firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
   }
   else {
     updateEdu();
@@ -321,9 +452,22 @@ let skillCounter = 1;
 $("#add_skill").click(function (e) {
   let isValid = true;
   let finalValid = true;
-  $("#accordionSkill .accordion-item:last-child").find("input, select").each(function () { isValid = validate_chg_color(this); if (!isValid) { finalValid = false; } });
+  let firstInvalid = null;
+  $("#accordionSkill .accordion-item:last-child").find("input, select").each(function () {
+    isValid = validate_chg_color(this);
+    if (!isValid) {
+      finalValid = false;
+      if (!firstInvalid) firstInvalid = this;
+    }
+  });
   if (!finalValid) {
     e.preventDefault();
+    if (firstInvalid) {
+      firstInvalid.focus();
+      if (firstInvalid.scrollIntoView) {
+        firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
   }
   else {
     updateSkill();
@@ -382,9 +526,22 @@ let interestCounter = 1;
 $("#add_interest").click(function (e) {
   let isValid = true;
   let finalValid = true;
-  $("#accordionInt .accordion-item:last-child").find('input').each(function () { isValid = validate_chg_color(this); if (!isValid) { finalValid = false; } });
+  let firstInvalid = null;
+  $("#accordionInt .accordion-item:last-child").find('input').each(function () {
+    isValid = validate_chg_color(this);
+    if (!isValid) {
+      finalValid = false;
+      if (!firstInvalid) firstInvalid = this;
+    }
+  });
   if (!finalValid) {
     e.preventDefault();
+    if (firstInvalid) {
+      firstInvalid.focus();
+      if (firstInvalid.scrollIntoView) {
+        firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
   }
   else {
     updateInterest();
@@ -443,9 +600,22 @@ let langCounter = 1;
 $("#add_lang").click(function (e) {
   let isValid = true;
   let finalValid = true;
-  $("#accordionLang .accordion-item:last-child").find('input').each(function () { isValid = validate_chg_color(this); if (!isValid) { finalValid = false; } });
+  let firstInvalid = null;
+  $("#accordionLang .accordion-item:last-child").find('input').each(function () {
+    isValid = validate_chg_color(this);
+    if (!isValid) {
+      finalValid = false;
+      if (!firstInvalid) firstInvalid = this;
+    }
+  });
   if (!finalValid) {
     e.preventDefault();
+    if (firstInvalid) {
+      firstInvalid.focus();
+      if (firstInvalid.scrollIntoView) {
+        firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
   }
   else {
     updateLang();
@@ -530,7 +700,10 @@ function resetImagePreview() {
     image.style.display = null;
     $('#image').attr('src', '');
   }
-  if (imgContainer) imgContainer.style.border = null;
+  if (imgContainer) {
+    imgContainer.style.border = null;
+    clearFieldError(imgContainer);
+  }
 }
 
 $('.imgContainer').click(function () {
@@ -564,6 +737,7 @@ $('#inpImg').change(function () {
     $('#image').css('display', 'block');
     reader.addEventListener('load', function () {
       $('#image').attr('src', this.result);
+      clearFieldError(document.getElementsByClassName('imgContainer')[0]);
       triggerAutoSave();
     });
     reader.readAsDataURL(file);
@@ -917,6 +1091,12 @@ $(document).ready(function () {
 
   $(document).on('input change keyup', 'textarea[maxlength]', function () {
     updateCharCounter(this);
+  });
+
+  $(document).on('input change blur', '#form1 input, #form1 select, #accordionWork input, #accordionEdu input, #accordionSkill input, #accordionInt input, #accordionLang input', function () {
+    if ($(this).hasClass('is-invalid-field') || $(this).siblings('.invalid-feedback-msg').length || $(this).parent().find('> .invalid-feedback-msg').length) {
+      validate_chg_color(this);
+    }
   });
 
   $(document).on('input change', '#form1 input, #form1 select, #form2 input, #form2 select, #form2 textarea, #form3 input', function () {
