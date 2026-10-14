@@ -768,17 +768,43 @@ function setSaveStatus(text, type) {
   let $status = $('#saveStatus');
   if (!$status.length) return;
 
-  if (type === 'error') {
-    $status.text(text).css({ 'opacity': '1', 'color': '#dc3545' });
-  } else if (type === 'saving') {
-    $status.text(text).css({ 'opacity': '1', 'color': '#6c757d' });
-  } else if (type === 'saved') {
-    $status.text(text).css({ 'opacity': '1', 'color': '#198754' });
-  } else if (type === 'restored' || type === 'cleared') {
-    $status.text(text).css({ 'opacity': '1', 'color': '#0d6efd' });
-  } else {
-    $status.text(text).css({ 'opacity': '0.75', 'color': '#6c757d' });
+  if (!text) {
+    $status.css('opacity', '0');
+    return;
   }
+
+  let iconClass = '';
+  let color = '#6c757d';
+  let opacity = '1';
+
+  if (type === 'error') {
+    iconClass = 'bi bi-exclamation-circle-fill';
+    color = '#dc3545';
+  } else if (type === 'saving') {
+    iconClass = 'bi bi-arrow-repeat';
+    color = '#6c757d';
+  } else if (type === 'saved') {
+    iconClass = 'bi bi-check-circle-fill';
+    color = '#198754';
+  } else if (type === 'restored') {
+    iconClass = 'bi bi-arrow-counterclockwise';
+    color = '#0d6efd';
+  } else if (type === 'cleared') {
+    iconClass = 'bi bi-trash';
+    color = '#fd7e14';
+  } else {
+    // default / saved recently
+    iconClass = 'bi bi-check-circle';
+    color = '#6c757d';
+    opacity = '0.75';
+  }
+
+  $status.empty();
+  if (iconClass) {
+    $status.append($('<i>').addClass(iconClass + ' me-1'));
+  }
+  $status.append(document.createTextNode(text));
+  $status.css({ 'opacity': opacity, 'color': color });
 }
 
 function triggerAutoSave() {
@@ -870,17 +896,35 @@ function saveDraft() {
 
   } catch (e) {
     console.warn('Could not save draft to localStorage:', e);
+    if (savedRecentlyTimeout) {
+      clearTimeout(savedRecentlyTimeout);
+      savedRecentlyTimeout = null;
+    }
     setSaveStatus('Save failed — please try again', 'error');
   }
 }
 
 function clearFormAndDraft() {
   if (confirm("Are you sure you want to clear all entered data and start fresh? This will delete your saved draft.")) {
-    setSaveStatus('Form cleared', 'cleared');
-    localStorage.removeItem('resumeBuilderDraft');
-    setTimeout(function () {
-      location.reload();
-    }, 200);
+    if (autoSaveTimeout) {
+      clearTimeout(autoSaveTimeout);
+      autoSaveTimeout = null;
+    }
+    if (savedRecentlyTimeout) {
+      clearTimeout(savedRecentlyTimeout);
+      savedRecentlyTimeout = null;
+    }
+
+    try {
+      localStorage.removeItem('resumeBuilderDraft');
+      setSaveStatus('Form cleared', 'cleared');
+      setTimeout(function () {
+        location.reload();
+      }, 200);
+    } catch (e) {
+      console.warn('Could not remove draft from localStorage:', e);
+      setSaveStatus('Failed to clear draft', 'error');
+    }
   }
 }
 
@@ -981,12 +1025,12 @@ function appendLangItemWithData(item, count) {
 }
 
 function loadDraft() {
-  let savedData = localStorage.getItem('resumeBuilderDraft');
-  if (!savedData) return;
-
   try {
+    let savedData = localStorage.getItem('resumeBuilderDraft');
+    if (!savedData) return;
+
     let draft = JSON.parse(savedData);
-    if (!draft) return;
+    if (!draft || typeof draft !== 'object') return;
 
     if (draft.fname) $('#fname').val(draft.fname);
     if (draft.lname) $('#lname').val(draft.lname);
