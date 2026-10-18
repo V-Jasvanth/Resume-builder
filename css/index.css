@@ -6,7 +6,8 @@ body {
   overflow-x: hidden;
 }
 
-nav li a:hover {
+nav li a:hover,
+nav li a:focus-visible {
   background-color: rgb(240, 240, 240);
   border-radius: 30px;
 }
@@ -185,10 +186,21 @@ a:focus-visible,
 button:focus-visible,
 .btn:focus-visible,
 .nav-link:focus-visible,
+.navbar-brand:focus-visible,
 .navbar-toggler:focus-visible,
 .form-control:focus-visible {
   outline: 3px solid #0d6efd !important;
   outline-offset: 2px !important;
+  box-shadow: 0 0 0 2px #ffffff !important;
+}
+
+.btn:focus-visible,
+.navbar-toggler:focus-visible {
+  border-radius: 4px;
+}
+
+.navbar-brand:focus-visible {
+  border-radius: 6px;
 }
 
 :focus:not(:focus-visible) {
