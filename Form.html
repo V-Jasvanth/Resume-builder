@@ -37,7 +37,7 @@
         id="nav">
         <div class="container d-flex justify-content-between align-items-center">
             <a class="navbar-brand me-auto" href="index.html">
-                <img src="images/RB.svg" alt="" height="50px">
+                <img src="images/RB.svg" alt="Resume Builder Logo" height="50px">
             </a>
             <div class="d-flex align-items-center">
                 <span id="saveStatus" class="me-3 text-muted d-inline-flex align-items-center" role="status" aria-live="polite" style="font-size: 0.85rem; font-weight: 500; white-space: nowrap; transition: opacity 0.3s, color 0.3s; opacity: 0;"></span>
@@ -683,12 +683,14 @@
                             <div class="col d-flex justify-content-center align-items-center">
                                 <!-- template 1 -->
                                 <div class="card p-1" onclick=" templateRadioSelector(this)">
-                                    <img src="images/T1.PNG" class="card-img-top" alt="...">
+                                    <img src="images/T1.PNG" class="card-img-top"
+                                        alt="Stanford resume template preview with a two-column layout, sidebar contact and skills section, and structured experience timeline"
+                                        loading="lazy">
                                     <div class="card-body">
                                         <div class="btn_box container d-block text-center">
-                                            <h5 class="card-title">Stanford</h5>
+                                            <h5 class="card-title"><label for="template_1" class="form-check-label mb-2 cursor-pointer">Stanford</label></h5>
                                             <input class="form-check-input" type="radio" name="selected_template"
-                                                id="template_1">
+                                                id="template_1" aria-label="Stanford Template">
                                         </div>
                                     </div>
                                 </div>
@@ -697,12 +699,14 @@
                             <div class="col d-flex justify-content-center align-items-center">
                                 <!-- template 2 -->
                                 <div class="card p-1" onclick=" templateRadioSelector(this)">
-                                    <img src="images/T2.PNG" class="card-img-top" alt="...">
+                                    <img src="images/T2.PNG" class="card-img-top"
+                                        alt="Harvard resume template preview with a classic single-column layout, prominent header, and horizontal section dividers"
+                                        loading="lazy">
                                     <div class="card-body">
                                         <div class="btn_box container d-block text-center">
-                                            <h5 class="card-title">Harvard</h5>
+                                            <h5 class="card-title"><label for="template_2" class="form-check-label mb-2 cursor-pointer">Harvard</label></h5>
                                             <input class="form-check-input" type="radio" name="selected_template"
-                                                id="template_2">
+                                                id="template_2" aria-label="Harvard Template">
                                         </div>
                                     </div>
                                 </div>
@@ -714,12 +718,14 @@
                             <div class="col d-flex justify-content-center align-items-center">
                                 <!-- template 3 -->
                                 <div class="card p-1" onclick=" templateRadioSelector(this)">
-                                    <img src="images/T3.PNG" class="card-img-top" alt="...">
+                                    <img src="images/T3.PNG" class="card-img-top"
+                                        alt="Edinburgh resume template preview with a modern dark header banner, side-by-side details, and clean experience blocks"
+                                        loading="lazy">
                                     <div class="card-body">
                                         <div class="btn_box container d-block text-center">
-                                            <h5 class="card-title">Edinburgh</h5>
+                                            <h5 class="card-title"><label for="template_3" class="form-check-label mb-2 cursor-pointer">Edinburgh</label></h5>
                                             <input class="form-check-input" type="radio" name="selected_template"
-                                                id="template_3">
+                                                id="template_3" aria-label="Edinburgh Template">
                                         </div>
                                     </div>
                                 </div>
