@@ -10,7 +10,6 @@ Experience the live application hosted directly on GitHub Pages:
 
 👉 **[Launch Resume Builder](https://v-jasvanth.github.io/Resume-builder/)**
 
----
 
 ## Project Preview
 
